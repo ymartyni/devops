@@ -1,0 +1,51 @@
+https://linuxconfig.org/install-wordpress-on-redhat-8
+
+wordpress
+
+1.yum install php-mysqlnd php-fpm mariadb-server httpd tar curl
+
+2. 
+systemctl start mariadb
+systemctl start httpd
+
+3.
+# systemctl enable mariadb
+# systemctl enable httpd
+
+4.
+# mysql_secure_installation
+(password - 1111)
+
+5.Create a new database wordpress and give new user admin access to the wordpress database with password pass:
+
+# mysql -u root -p
+mysql> CREATE DATABASE wordpress;
+mysql> CREATE USER `admin`@`localhost` IDENTIFIED BY 'password';
+mysql> GRANT ALL ON wordpress.* TO `admin`@`localhost`;
+mysql> FLUSH PRIVILEGES;
+mysql> exit
+
+6.Download and extract WordPress. Start by downloading the WordPress installation package and extracting its content:
+$ curl https://wordpress.org/latest.tar.gz --output wordpress.tar.gz
+$ tar xf wordpress.tar.gz
+
+Copy the extracted WordPress directory into the /var/www/html directory:
+# cp -r wordpress /var/www/html
+
+Lastly in this step, change permissions and change file SELinux security context:
+# chown -R apache:apache /var/www/html/wordpress
+# chcon -t httpd_sys_rw_content_t /var/www/html/wordpress -R
+
+Відкрити порт 80, в моєму випадку.
+
+34.209.168.201/wordpress
+http://34.209.168.201/wordpress/wp-admin/plugins.php
+
+wordpress password  kuHxuj-wivjym-fafvy0
+
+
+define('WP_HOME','https://34.209.168.201/wordpress/wordpress');
+define('WP_SITEURL','https://34.209.168.201/wordpress');
+
+
+Відкрити 80-й порт!!!!
